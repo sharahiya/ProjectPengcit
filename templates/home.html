@@ -2,18 +2,18 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>HOME PAGE</title>
+    <title>HISTOGRAM</title>
     <link rel="stylesheet" href="/static/css/main.css" />
   </head>
 
-  <body class="text-lg bg-emerald-600">
+  <body class="text-lg bg-[#91C8E4]">
 
 
-<nav class="bg-white border-gray-200 dark:bg-gray-900">
-    <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
-        <div class="flex items-center">
+<nav class="bg-blue-950 border-gray-200 dark:bg-gray-900">
+    <div class="flex flex-wrap justify-between items-center max-w-screen-xl p-4">
+        <div class="flex items-start">
             <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 mr-3" alt="Flowbite Logo" />
-            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">JIAKH</span>
+            <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">YAYA</span>
         </div>
 
         
@@ -24,17 +24,17 @@
     </div>
 </nav>
 <nav class="bg-gray-50 dark:bg-gray-700">
-    <div class="max-w-screen-xl px-4 py-3 mx-auto">
+    <div class="max-w-screen-xl px-4 py-3 ">
         <div class="flex items-center">
             <ul class="flex flex-row font-medium mt-0 mr-6 space-x-8 text-sm">
                 <li>
-                    <a href="#" class="text-gray-900 dark:text-white hover:underline" aria-current="page">Home</a>
+                    <a href="#" class="text-gray-900 dark:text-white hover:underline" aria-current="page">histogram equalization</a>
                 </li>
                 <li>
-                    <a href="#" class="text-gray-900 dark:text-white hover:underline">Company</a>
+                    <a href="#" class="text-gray-900 dark:text-white hover:underline">Blur Image</a>
                 </li>
                 <li>
-                    <a href="#" class="text-gray-900 dark:text-white hover:underline">Team</a>
+                    <a href="#" class="text-gray-900 dark:text-white hover:underline"></a>
                 </li>
                 <li>
                     <a href="#" class="text-gray-900 dark:text-white hover:underline">Features</a>
@@ -51,33 +51,28 @@
         action="{{ url_for('histogram_equalization') }}"
         enctype="multipart/form-data"
         method="POST"
-        class=""
-      >
-        <div class="mx-10">
-          <label
-            for="formFile"
-            class="mb-2 inline-block text-neutral-700 text-xl"
-            >Upload Image</label
-          >
+        
+      >  
+<div class="flex items-center justify-center w-full">
+  <label for="dropzone-file" class="flex flex-col items-center justify-center w-[500px] h-48 border-2 mt-6 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+      <div class="flex flex-col items-center justify-center pt-5 pb-6">
+          <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+          </svg>
+          <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+      </div>
+      <input id="dropzone-file" name="img" type="file" class="hidden" />
+  </label>
+    <input type="submit" class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded ml-3">
+</div> 
 
-          <div class="flex">
-            <input
-              name="img"
-              id="img"
-              type="file"
-              class="block w-2/3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 file:py-4 file:text-base file:bg-teal-100 k-600 file:border-gray-200 hover:file:bg-gray-300"
-            />
-
-            <input
-              type="submit"
-              class="bg-teal-500 hover:bg-teal-400 text-white font-bold py-2 px-4 border-b-4 border-teal-700 hover:border-emerald-500 rounded ml-2"
-            />
-          </div>
-        </div>
       </form>
 
 
 
+      <div
+      class="ml-6">
           {% if img %}
           <h4>
             First Pict
@@ -86,7 +81,8 @@
           {% endif %}
         </div>
 
-        <div>
+        <div
+        class="ml-6">
           {% if histogram %}
           <h4>
             First Histogram
@@ -94,10 +90,10 @@
           <img src="{{ histogram }}" style="width: 300px;" />
           {% endif %}
         </div>
-      </div>
+      
 
       <div >
-        <div class="mr-10">
+        <div class="ml-6">
           {% if img2 %}
           <h4>
             Image After Equalization
@@ -106,7 +102,8 @@
           {% endif %}
         </div>
 
-        <div>
+        <div
+        class="ml-6">
           {% if histogram2 %}
           <h4>
             Histogram After Equalization
@@ -115,6 +112,8 @@
           {% endif %}
         </div>
       </div>
+
+
     </section>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
   </body>

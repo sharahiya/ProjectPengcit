@@ -119,8 +119,31 @@ def bluredpage():
         return render_template('dazzcam.html', img=img_path, miftah=blurred_image_path)
     return render_template('dazzcam.html')
 
+def edge_detection(img):
+    # Menerapkan deteksi tepi menggunakan algoritma Canny
+    edges = cv2.Canny(img, 100, 200) 
+
+    # Menyimpan gambar hasil deteksi tepi ke folder "static/uploads"
+    edge_image_path = os.path.join(app.config['UPLOAD'], 'edge_detected.jpg')
+    cv2.imwrite(edge_image_path, edges)
+
+    return edge_image_path
+
 @app.route('/thirdpage', methods=['GET', 'POST'])
 def edgedetection():
+    if request.method == 'POST':
+        file = request.files['img']
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD'], filename))
+        img_path = os.path.join(app.config['UPLOAD'], filename)
+
+        # Membaca gambar dengan OpenCV
+        img = cv2.imread(img_path)
+
+        # Memanggil fungsi edge_detection
+        edge_image_path = edge_detection(img)
+
+        return render_template('edgedetection.html', image=img_path, edge=edge_image_path)
     return render_template('edgedetection.html')
 
 

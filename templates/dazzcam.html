@@ -114,28 +114,25 @@
         value="1"
         id="tingkatan"
         step="2"
-        oninput="display(this.value, this.id)"
+        oninput="nilai_value(this.value, this.id)"
       />
       <span>Value: </span>
       <span id="tingkatan-value">1</span>
     </form>
 
     {% if img %}
-    <h4 class="text-center font-medium text-xl text-black mb-6">Original Image</h4>
+    <h2 class="text-center font-medium text-xl text-black mb-6">First Pict</h2>
     <img src="{{ img }}" alt="Original Image" class="w-[500px]" id="original-img">
-
     {% endif %}
 
-    {% if miftah %}
-            <h4 class="text-center font-medium text-xl text-black mb-6">Original Image</h4>
-            <img src="{{ miftah }}" alt="Original Image" class="w-[500px]" id="original-img">
-
-        {% endif %}
+    {% if fotoblur %}
+            <h2 class="text-center font-medium text-xl text-black mb-6">Second Pict</h2>
+            <img src="{{ fotoblur }}" alt="Original Image" class="w-[500px]" id="original-img">
+      {% endif %}
 
     <script>
-        function display(value, id) {
-            // Menampilkan nilai pada elemen dengan ID yang sesuai
-            document.getElementById(id + "-value").innerHTML = value;
+        function nilai_value(value, id) {
+          document.getElementById(id + "-value").innerHTML = value;
         }
     </script>
 

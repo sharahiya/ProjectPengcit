@@ -74,32 +74,21 @@ def histogram_equalization():
     return render_template('home.html')
 
 
-def blur_faces(image_path, blur_level):
-    # Membaca gambar dengan OpenCV
-    img = cv2.imread(image_path)
-
-    # Menggunakan Cascade Classifier untuk mendeteksi wajah
+def blurwajah(path_img, intensitas):
+    img = cv2.imread(path_img)
     gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-
-    # Menerapkan deteksi wajah dengan parameter yang diatur
-    faces = face_cascade.detectMultiScale(gray_img, scaleFactor=1.1, minNeighbors=5, minSize=[30, 30])
-
-    # Menerapkan efek blur ke setiap wajah yang terdeteksi
+    faces = face_cascade.detectMultiScale(gray_img, scaleFactor=1.1, minNeighbors=3, minSize=[25, 25])
     for (x, y, w, h) in faces:
-        # Ambil bagian wajah dari gambar
         face = img[y:y+h, x:x+w]
-        # Hitung ukuran kernel berdasarkan tingkat blur yang diatur
-        kernel_size = (blur_level, blur_level)
-        # Terapkan efek blur Gaussian dengan kernel yang sesuai
+        kernel_size = (intensitas, intensitas)
         blurred_face = cv2.GaussianBlur(face, kernel_size, 0)
         img[y:y+h, x:x+w] = blurred_face
 
-    # Menyimpan gambar dengan wajah-wajah yang telah di-blur
-    blurred_image_path = os.path.join(app.config['UPLOAD'], 'blurred_image.jpg')
-    cv2.imwrite(blurred_image_path, img)
+    gambar_blur = os.path.join(app.config['UPLOAD'], 'gambar_blur.jpg')
+    cv2.imwrite(gambar_blur, img)
 
-    return blurred_image_path
+    return gambar_blur
 
 
 @app.route('/secondpage', methods=['GET', 'POST'])
@@ -108,26 +97,20 @@ def bluredpage():
         file = request.files['img']
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD'], filename))
-        img_path = os.path.join(app.config['UPLOAD'], filename)
+        path_img = os.path.join(app.config['UPLOAD'], filename)
 
-        # Get blur level from the form
-        blur_level = int(request.form.get('tingkatan', 1))
-
-        # Call the function to blur faces
-        blurred_image_path = blur_faces(img_path, blur_level)
-
-        return render_template('dazzcam.html', img=img_path, miftah=blurred_image_path)
+        intensitas = int(request.form.get('tingkatan', 1))
+        gambar_blur = blurwajah(path_img, intensitas)
+        return render_template('dazzcam.html', img=path_img, fotoblur=gambar_blur)
     return render_template('dazzcam.html')
 
-def edge_detection(img):
-    # Menerapkan deteksi tepi menggunakan algoritma Canny
-    edges = cv2.Canny(img, 100, 200) 
+def edgefunction(img):
+    edges = cv2.Canny(img, 150, 250) 
 
-    # Menyimpan gambar hasil deteksi tepi ke folder "static/uploads"
-    edge_image_path = os.path.join(app.config['UPLOAD'], 'edge_detected.jpg')
-    cv2.imwrite(edge_image_path, edges)
+    gambar_edge = os.path.join(app.config['UPLOAD'], 'gambar_edge.jpg')
+    cv2.imwrite(gambar_edge, edges)
 
-    return edge_image_path
+    return gambar_edge
 
 @app.route('/thirdpage', methods=['GET', 'POST'])
 def edgedetection():
@@ -137,13 +120,9 @@ def edgedetection():
         file.save(os.path.join(app.config['UPLOAD'], filename))
         img_path = os.path.join(app.config['UPLOAD'], filename)
 
-        # Membaca gambar dengan OpenCV
         img = cv2.imread(img_path)
-
-        # Memanggil fungsi edge_detection
-        edge_image_path = edge_detection(img)
-
-        return render_template('edgedetection.html', image=img_path, edge=edge_image_path)
+        gambar_edge = edgefunction(img)
+        return render_template('edgedetection.html', image=img_path, edge=gambar_edge)
     return render_template('edgedetection.html')
 
 

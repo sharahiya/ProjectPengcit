@@ -25,41 +25,39 @@
       </div>
     </nav>
 
-    <nav class="bg-gray-50 dark:bg-gray-700">
-      <div class="max-w-screen-xl px-4 py-3">
+<nav class="bg-gray-50 dark:bg-gray-700">
+    <div class="max-w-screen-xl px-4 py-3 ">
         <div class="flex items-center">
-          <ul class="flex flex-row font-medium mt-0 mr-6 space-x-8 text-sm">
-            <li>
-              <a
-                href="{{url_for('histogram_equalization')}}"
-                class="text-gray-900 dark:text-white hover:underline"
-                aria-current="page"
-                >histogram equalization</a
-              >
+            <ul class="flex flex-row font-medium mt-0 mr-6 space-x-8 text-sm">
+                <li>
+                    <a href="{{url_for('histogram_equalization')}}" class="text-gray-900 dark:text-white hover:underline" aria-current="page">histogram equalization</a>
+                </li>
+                <li>
+                    <a href="{{url_for('bluredpage')}}" class="text-gray-900 dark:text-white hover:underline">Blur Image</a>
+                </li>
+                <li>
+                  <a href="{{url_for('edgedetection')}}" class="text-gray-900 dark:text-white hover:underline">Edge Detection</a>
+              </li>
+              <li>
+                <a href="{{url_for('hapusbg')}}" class="text-gray-900 dark:text-white hover:underline">Delete Background</a>
             </li>
-            <li>
-              <a
-                href="{{url_for('bluredpage')}}"
-                class="text-gray-900 dark:text-white hover:underline"
-                >Blur Image</a
-              >
-            </li>
-            <li>
-              <a
-                href="{{url_for('edgedetection')}}"
-                class="text-gray-900 dark:text-white hover:underline"
-                >Edge Detection</a
-              >
-            </li>
-            <li>
-              <a href="#" class="text-gray-900 dark:text-white hover:underline"
-                >Features</a
-              >
-            </li>
-          </ul>
+                <li>
+                    <a href="{{url_for('stega')}}" class="text-gray-900 dark:text-white hover:underline">Steganography</a>
+                </li>
+                <li>
+                  <a href="{{url_for('cartonize')}}" class="text-gray-900 dark:text-white hover:underline">Cartoonize</a>
+              </li>
+              <li>
+                  <a href="{{url_for('opening')}}" class="text-gray-900 dark:text-white hover:underline">Opening</a>
+              </li>
+              <li>
+                  <a href="{{url_for('closing')}}" class="text-gray-900 dark:text-white hover:underline">Closing</a>
+              </li>
+            
+            </ul>
         </div>
-      </div>
-    </nav>
+    </div>
+</nav>
 
     <form
       action="{{ url_for('bluredpage') }}"
@@ -114,28 +112,25 @@
         value="1"
         id="tingkatan"
         step="2"
-        oninput="display(this.value, this.id)"
+        oninput="nilai_value(this.value, this.id)"
       />
       <span>Value: </span>
       <span id="tingkatan-value">1</span>
     </form>
 
     {% if img %}
-    <h4 class="text-center font-medium text-xl text-black mb-6">Original Image</h4>
+    <h2 class="text-center font-medium text-xl text-black mb-6">First Pict</h2>
     <img src="{{ img }}" alt="Original Image" class="w-[500px]" id="original-img">
-
     {% endif %}
 
-    {% if miftah %}
-            <h4 class="text-center font-medium text-xl text-black mb-6">Original Image</h4>
-            <img src="{{ miftah }}" alt="Original Image" class="w-[500px]" id="original-img">
-
-        {% endif %}
+    {% if fotoblur %}
+            <h2 class="text-center font-medium text-xl text-black mb-6">Second Pict</h2>
+            <img src="{{ fotoblur }}" alt="Original Image" class="w-[500px]" id="original-img">
+      {% endif %}
 
     <script>
-        function display(value, id) {
-            // Menampilkan nilai pada elemen dengan ID yang sesuai
-            document.getElementById(id + "-value").innerHTML = value;
+        function nilai_value(value, id) {
+          document.getElementById(id + "-value").innerHTML = value;
         }
     </script>
 

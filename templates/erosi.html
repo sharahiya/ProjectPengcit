@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="/static/css/main.css" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Opening</title>
+    <title>Closing</title>
   </head>
   <body>
     <nav class="bg-blue-950 border-gray-200 dark:bg-gray-900">
@@ -57,8 +57,9 @@
                 <a href="{{url_for('dilasi')}}" class="text-gray-900 dark:text-white hover:underline">Dilasi</a>
             </li>
             <li>
-              <a href="{{url_for('erosi')}}" class="text-gray-900 dark:text-white hover:underline">erosi</a>
-          </li>
+                <a href="{{url_for('erosi')}}" class="text-gray-900 dark:text-white hover:underline">Erosi</a>
+            </li>
+
             
             </ul>
         </div>
@@ -66,7 +67,7 @@
 </nav>
 
     <form
-      action="{{ url_for('opening') }}"
+      action="{{ url_for('erosi') }}"
       enctype="multipart/form-data"
       method="POST"
     >
@@ -115,9 +116,9 @@
     <img src="{{ img }}" alt="Original Image" class="w-[500px]" id="original-img">
     {% endif %}
 
-    {% if opening_img %}
+    {% if erosi_img %}
             <h2 class="text-center font-medium text-xl text-black mb-6">Second Pict</h2>
-            <img src="{{ opening_img }}" alt="Original Image" class="w-[500px]" id="original-img">
+            <img src="{{ erosi_img }}" alt="Original Image" class="w-[500px]" id="original-img">
       {% endif %}
 
   </body>

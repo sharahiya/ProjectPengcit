@@ -355,11 +355,32 @@ def erosi():
     return render_template('erosi.html')
 
 
+@app.route('/bilinear', methods=['GET', 'POST'])
+def bilinear():
+    if request.method == 'POST':
+        file = request.files['img']
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD'], filename))
+        img_path = os.path.join(app.config['UPLOAD'], filename)
 
+        img = cv2.imread(img_path)
 
+        # Mendefinisikan scale
+        scale_x = float(request.form['scale_x'])  
+        scale_y = float(request.form['scale_y'])  
 
+        # scaling menggunakan bilinear interpolation
+        scaled_img = cv2.resize(img, None, fx=scale_x, fy=scale_y, interpolation=cv2.INTER_LINEAR)
 
+        # Menyimpan gambar
+        scaled_image_path = os.path.join(app.config['UPLOAD'], 'scaled_image.jpg')
+        cv2.imwrite(scaled_image_path, scaled_img)
+
+        return render_template('bilinear.html', img=img_path, img_bilinear=scaled_image_path)
+    return render_template('bilinear.html')
 
 
 if __name__ == '__main__': 
     app.run(debug=True,port=8001)
+
+

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Closing</title>
   </head>
-  <body>
+  <body class="text-lg bg-[#91C8E4]">
     <nav class="bg-blue-950 border-gray-200 dark:bg-gray-900">
       <div
         class="flex flex-wrap justify-between items-center max-w-screen-xl p-4"
@@ -29,36 +29,39 @@
     <div class="max-w-screen-xl px-4 py-3 ">
         <div class="flex items-center">
             <ul class="flex flex-row font-medium mt-0 mr-6 space-x-8 text-sm">
-                <li>
-                    <a href="{{url_for('histogram_equalization')}}" class="text-gray-900 dark:text-white hover:underline" aria-current="page">histogram equalization</a>
-                </li>
-                <li>
-                    <a href="{{url_for('bluredpage')}}" class="text-gray-900 dark:text-white hover:underline">Blur Image</a>
-                </li>
-                <li>
-                  <a href="{{url_for('edgedetection')}}" class="text-gray-900 dark:text-white hover:underline">Edge Detection</a>
+              <li>
+                  <a href="{{url_for('histogram_equalization')}}" class="text-gray-900 dark:text-white hover:underline" aria-current="page">histogram equalization</a>
               </li>
               <li>
-                <a href="{{url_for('hapusbg')}}" class="text-gray-900 dark:text-white hover:underline">Delete Background</a>
-            </li>
-                <li>
-                    <a href="{{url_for('stega')}}" class="text-gray-900 dark:text-white hover:underline">Steganography</a>
-                </li>
-                <li>
-                  <a href="{{url_for('cartonize')}}" class="text-gray-900 dark:text-white hover:underline">Cartoonize</a>
+                  <a href="{{url_for('bluredpage')}}" class="text-gray-900 dark:text-white hover:underline">Blur Image</a>
               </li>
               <li>
-                  <a href="{{url_for('opening')}}" class="text-gray-900 dark:text-white hover:underline">Opening</a>
-              </li>
-              <li>
-                  <a href="{{url_for('closing')}}" class="text-gray-900 dark:text-white hover:underline">Closing</a>
-              </li>
-              <li>
-                <a href="{{url_for('dilasi')}}" class="text-gray-900 dark:text-white hover:underline">Dilasi</a>
+                <a href="{{url_for('edgedetection')}}" class="text-gray-900 dark:text-white hover:underline">Edge Detection</a>
             </li>
             <li>
-              <a href="{{url_for('erosi')}}" class="text-gray-900 dark:text-white hover:underline">Dilasi</a>
+              <a href="{{url_for('hapusbg')}}" class="text-gray-900 dark:text-white hover:underline">Delete Background</a>
           </li>
+              <li>
+                  <a href="{{url_for('stega')}}" class="text-gray-900 dark:text-white hover:underline">Steganography</a>
+              </li>
+              <li>
+                <a href="{{url_for('cartonize')}}" class="text-gray-900 dark:text-white hover:underline">Cartoonize</a>
+            </li>
+            <li>
+              <a href="{{url_for('dilasi')}}" class="text-gray-900 dark:text-white hover:underline">Dilasi</a>
+          </li>
+          <li>
+            <a href="{{url_for('erosi')}}" class="text-gray-900 dark:text-white hover:underline">Erosi</a>
+        </li>
+        <li>
+          <a href="{{url_for('opening')}}" class="text-gray-900 dark:text-white hover:underline">Opening</a>
+        </li>
+        <li>
+            <a href="{{url_for('closing')}}" class="text-gray-900 dark:text-white hover:underline">Closing</a>
+        </li>
+        <li>
+          <a href="{{url_for('bilinear')}}" class="text-gray-900 dark:text-white hover:underline">Bilinear</a>
+      </li>
             
             </ul>
         </div>

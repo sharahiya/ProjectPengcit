@@ -54,11 +54,9 @@
                   <a href="{{url_for('closing')}}" class="text-gray-900 dark:text-white hover:underline">Closing</a>
               </li>
               <li>
-                <a href="{{url_for('dilasi')}}" class="text-gray-900 dark:text-white hover:underline">Dilasi</a>
+                <a href="{{url_for('dilasi')}}" class="text-gray-900 dark:text-white hover:underline">Dilasi & Erosi</a>
             </li>
-            <li>
-                <a href="{{url_for('erosi')}}" class="text-gray-900 dark:text-white hover:underline">Erosi</a>
-            </li>
+
 
             
             </ul>
@@ -112,14 +110,18 @@
     </form>
 
     {% if img %}
-    <h2 class="text-center font-medium text-xl text-black mb-6">First Pict</h2>
-    <img src="{{ img }}" alt="Original Image" class="w-[500px]" id="original-img">
+    <h2 class="text-center font-medium text-xl text-black mb-6 my-6">First Pict</h2>
+    <img src="{{ img }}" alt="Original Image" class="w-[500px]" id="original-img" style="max-width: 900px; max-height: 700px; display: block; margin: 0 auto;">
     {% endif %}
 
     {% if dilasi_img %}
-            <h2 class="text-center font-medium text-xl text-black mb-6">Second Pict</h2>
-            <img src="{{ dilasi_img }}" alt="Original Image" class="w-[500px]" id="original-img">
+            <h2 class="text-center font-medium text-xl text-black mb-6">Dilasi</h2>
+            <img src="{{ dilasi_img }}" alt="Original Image" class="w-[500px]" id="original-img" style="max-width: 900px; max-height: 700px; display: block; margin: 0 auto;">
       {% endif %}
 
+      {% if erosi_img %}
+      <h2 class="text-center font-medium text-xl text-black mb-6">Erosi</h2>
+      <img src="{{ erosi_img }}" alt="Original Image" class="w-[500px]" id="original-img" style="max-width: 900px; max-height: 700px; display: block; margin: 0 auto;">
+{% endif %}
   </body>
 </html>

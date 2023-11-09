@@ -324,14 +324,21 @@ def dilasi():
 
         img = cv2.imread(img_path)
 
-        kernel = np.ones((5, 5), np.uint8) 
+        kernel = np.ones((3, 3), np.uint8) 
         
-        img_dilation = cv2.dilate(img, kernel, iterations=1) 
+        img_dilation = cv2.dilate(img, kernel, iterations=1)
+
+        img_erosion = cv2.erode(img, kernel, iterations=1) 
+
 
         dilasi_image_path = os.path.join(app.config['UPLOAD'], 'dilasi_image.jpg')
-        cv2.imwrite(dilasi_image_path, img_dilation)
+        erosion_image_path = os.path.join(app.config['UPLOAD'], 'erosi_image.jpg')
 
-        return render_template('dilasi.html', img=img_path, dilasi_img=dilasi_image_path)
+        cv2.imwrite(dilasi_image_path, img_dilation)
+        cv2.imwrite(erosion_image_path, img_erosion)
+
+
+        return render_template('dilasi.html', img=img_path, dilasi_img=dilasi_image_path, erosi_img=erosion_image_path)
     return render_template('dilasi.html')
 
 @app.route('/erosi', methods=['GET', 'POST'])
@@ -344,7 +351,7 @@ def erosi():
 
         img = cv2.imread(img_path)
 
-        kernel = np.ones((5, 5), np.uint8) 
+        kernel = np.ones((3, 3), np.uint8) 
         
         img_erosion = cv2.erode(img, kernel, iterations=1) 
 

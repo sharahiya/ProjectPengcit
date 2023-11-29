@@ -50,9 +50,6 @@
               <li>
                 <a href="{{url_for('dilasi')}}" class="text-gray-900 dark:text-white hover:underline">Dilasi</a>
             </li>
-            <li>
-              <a href="{{url_for('erosi')}}" class="text-gray-900 dark:text-white hover:underline">Erosi</a>
-          </li>
           <li>
             <a href="{{url_for('opening')}}" class="text-gray-900 dark:text-white hover:underline">Opening</a>
           </li>
@@ -60,7 +57,7 @@
               <a href="{{url_for('closing')}}" class="text-gray-900 dark:text-white hover:underline">Closing</a>
           </li>
           <li>
-            <a href="{{url_for('bilinear')}}" class="text-gray-900 dark:text-white hover:underline">Bilinear</a>
+            <a href="{{url_for('bilinear')}}" class="text-gray-900 dark:text-white hover:underline">Interpolation</a>
         </li>
             
             </ul>
@@ -124,13 +121,23 @@
 
     {% if img %}
     <h2 class="text-center font-medium text-xl text-black mb-6">First Pict</h2>
-    <img src="{{ img }}" alt="Original Image" id="original-img">
+    <img src="{{ img }}" alt="Original Image" id="original-img" style="max-width: 900px; max-height: 700px; display: block; margin: 0 auto;">
     {% endif %}
 
     {% if img_bilinear %}
-            <h2 class="text-center font-medium text-xl text-black mb-6">Second Pict</h2>
-            <img src="{{ img_bilinear }}" alt="Original Image" id="original-img">
+            <h2 class="text-center font-medium text-xl text-black mb-6">Billinear Pict</h2>
+            <img src="{{ img_bilinear }}" alt="Original Image" id="original-img" style="max-width: 900px; max-height: 700px; display: block; margin: 0 auto;">
       {% endif %}
+
+      {% if img_nearest %}
+      <h2 class="text-center font-medium text-xl text-black mb-6">Nearest Pict</h2>
+      <img src="{{ img_nearest }}" alt="Original Image" id="original-img" style="max-width: 900px; max-height: 700px; display: block; margin: 0 auto;">
+    {% endif %}
+
+    {% if img_lanczos %}
+    <h2 class="text-center font-medium text-xl text-black mb-6">Lanczos Pict</h2>
+    <img src="{{ img_lanczos }}" alt="Original Image" id="original-img" style="max-width: 900px; max-height: 700px; display: block; margin: 0 auto;">
+  {% endif %}
 
     <script>
         function nilai_value(value, id) {

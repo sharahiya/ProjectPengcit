@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body class="text-lg bg-[#91C8E4]">
+    <nav class="bg-blue-950 border-gray-200 dark:bg-gray-900">
+      <div
+        class="flex flex-wrap justify-between items-center max-w-screen-xl p-4"
+      >
+        <div class="flex items-start">
+          <img
+            src="https://flowbite.com/docs/images/logo.svg"
+            class="h-8 mr-3"
+            alt="Flowbite Logo"
+          />
+          <span
+            class="self-center text-2xl font-semibold whitespace-nowrap text-white"
+            >YAYA</span
+          >
+        </div>
+      </div>
+    </nav>
+
+<nav class="bg-gray-50 dark:bg-gray-700">
+    <div class="max-w-screen-xl px-4 py-3 ">
+        <div class="flex items-center">
+            <ul class="flex flex-row font-medium mt-0 mr-6 space-x-8 text-sm">
+                <li>
+                    <a href="{{url_for('histogram_equalization')}}" class="text-gray-900 dark:text-white hover:underline" aria-current="page">histogram equalization</a>
+                </li>
+                <li>
+                    <a href="{{url_for('bluredpage')}}" class="text-gray-900 dark:text-white hover:underline">Blur Image</a>
+                </li>
+                <li>
+                  <a href="{{url_for('edgedetection')}}" class="text-gray-900 dark:text-white hover:underline">Edge Detection</a>
+              </li>
+              <li>
+                <a href="{{url_for('hapusbg')}}" class="text-gray-900 dark:text-white hover:underline">Delete Background</a>
+            </li>
+                <li>
+                    <a href="{{url_for('stega')}}" class="text-gray-900 dark:text-white hover:underline">Steganography</a>
+                </li>
+                <li>
+                  <a href="{{url_for('cartonize')}}" class="text-gray-900 dark:text-white hover:underline">Cartoonize</a>
+              </li>
+              <li>
+                <a href="{{url_for('dilasi')}}" class="text-gray-900 dark:text-white hover:underline">Dilasi</a>
+            </li>
+          <li>
+            <a href="{{url_for('opening')}}" class="text-gray-900 dark:text-white hover:underline">Opening</a>
+          </li>
+          <li>
+              <a href="{{url_for('closing')}}" class="text-gray-900 dark:text-white hover:underline">Closing</a>
+          </li>
+          <li>
+            <a href="{{url_for('bilinear')}}" class="text-gray-900 dark:text-white hover:underline">Bilinear</a>
+        </li>
+        <li>
+            <a href="{{url_for('lanczos')}}" class="text-gray-900 dark:text-white hover:underline">Bilinear</a>
+        </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <form
+      action="{{ url_for('add_noise') }}"
+      enctype="multipart/form-data"
+      method="POST"
+    >
+      <div class="flex items-center justify-center w-full">
+        <label
+          for="dropzone-file"
+          class="flex flex-col items-center justify-center w-[500px] h-48 border-2 mt-6 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+        >
+          <div class="flex flex-col items-center justify-center pt-5 pb-6">
+            <svg
+              class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 16"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+              />
+            </svg>
+            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+              <span class="font-semibold">Click to upload</span> or drag and
+              drop
+            </p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">
+              SVG, PNG, JPG or GIF (MAX. 800x400px)
+            </p>
+          </div>
+          <input id="dropzone-file" name="img" type="file" class="hidden" />
+        </label>
+        <input
+          type="submit"
+          class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded ml-3"
+        />
+       
+      </div>
+    </form>
+
+    {% if img %}
+    <h2 class="text-center font-medium text-xl text-black mb-6">First Pict</h2>
+    <img src="{{ img }}" alt="Original Image" id="original-img">
+    {% endif %}
+
+    {% if img_noise %}
+            <h2 class="text-center font-medium text-xl text-black mb-6">Second Pict</h2>
+            <img src="{{ img_noise }}" alt="Original Image" id="original-img">
+      {% endif %}
+
+    <script>
+        function nilai_value(value, id) {
+          document.getElementById(id + "-value").innerHTML = value;
+        }
+    </script>
+
+  </body>
+</html>

@@ -1,3 +1,4 @@
+import array
 from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
 import os
@@ -9,70 +10,70 @@ from steganography import encode, decode, histogram, countn_byte
 app = Flask(__name__)
 
 class Cartoonizer: 
- """Cartoonizer effect 
-  A class that applies a cartoon effect to an image. 
-  The class uses a bilateral filter and adaptive thresholding to create 
-  a cartoon effect. 
- """
- def __init__(self): 
-  pass
-  
- def render(self, img_rgb): 
-  img_rgb = cv2.imread(img_rgb) 
-  img_rgb = cv2.resize(img_rgb, (1366,768)) 
-  numDownSamples = 2  # number of downscaling steps 
-  numBilateralFilters = 100 # number of bilateral filtering steps 
-  
-  # -- STEP 1 -- 
-  
-  # downsample image using Gaussian pyramid 
-  img_color = img_rgb 
-  for _ in range(numDownSamples): 
-   img_color = cv2.pyrDown(img_color) 
-  
-  #cv2.imshow("downcolor",img_color) 
-  #cv2.waitKey(0) 
-  # repeatedly apply small bilateral filter instead of applying 
-  # one large filter 
-  for _ in range(numBilateralFilters): 
-   img_color = cv2.bilateralFilter(img_color, 9, 9, 7) 
-  
-  #cv2.imshow("bilateral filter",img_color) 
-  #cv2.waitKey(0) 
-  # upsample image to original size 
-  for _ in range(numDownSamples): 
-   img_color = cv2.pyrUp(img_color) 
-  #cv2.imshow("upscaling",img_color) 
-  #cv2.waitKey(0) 
-  
-  # -- STEPS 2 and 3 -- 
-  # convert to grayscale and apply median blur 
-  img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_RGB2GRAY) 
-  img_blur = cv2.medianBlur(img_gray, 3) 
-  #cv2.imshow("grayscale+median blur",img_color) 
-  #cv2.waitKey(0) 
-  
-  # -- STEP 4 -- 
-  # detect and enhance edges 
-  img_edge = cv2.adaptiveThreshold(img_blur, 255, 
-          cv2.ADAPTIVE_THRESH_MEAN_C, 
-          cv2.THRESH_BINARY, 9, 2) 
-  #cv2.imshow("edge",img_edge) 
-  #cv2.waitKey(0) 
-  
-  # -- STEP 5 -- 
-  # convert back to color so that it can be bit-ANDed with color image 
-  (x,y,z) = img_color.shape 
-  img_edge = cv2.resize(img_edge,(y,x)) 
-  img_edge = cv2.cvtColor(img_edge, cv2.COLOR_GRAY2RGB) 
-  cv2.imwrite("edge.png",img_edge) 
-  #cv2.imshow("step 5", img_edge) 
-  #cv2.waitKey(0) 
-  #img_edge = cv2.resize(img_edge,(i for i in img_color.shape[:2])) 
-  #print img_edge.shape, img_color.shape 
-  cartoonized_image = cv2.bitwise_and(img_color, img_edge)
+    """Cartoonizer effect 
+    A class that applies a cartoon effect to an image. 
+    The class uses a bilateral filter and adaptive thresholding to create 
+    a cartoon effect. 
+    """
+    def __init__(self): 
+        pass
 
-  return cartoonized_image
+    def render(self, img_rgb): 
+        img_rgb = cv2.imread(img_rgb) 
+        img_rgb = cv2.resize(img_rgb, (1366,768)) 
+        numDownSamples = 2  # number of downscaling steps 
+        numBilateralFilters = 100 # number of bilateral filtering steps 
+
+        # -- STEP 1 -- 
+
+        # downsample image using Gaussian pyramid 
+        img_color = img_rgb 
+        for _ in range(numDownSamples): 
+            img_color = cv2.pyrDown(img_color) 
+
+            #cv2.imshow("downcolor",img_color) 
+            #cv2.waitKey(0) 
+            # repeatedly apply small bilateral filter instead of applying 
+            # one large filter 
+            for _ in range(numBilateralFilters): 
+                img_color = cv2.bilateralFilter(img_color, 9, 9, 7) 
+
+            #cv2.imshow("bilateral filter",img_color) 
+            #cv2.waitKey(0) 
+            # upsample image to original size 
+            for _ in range(numDownSamples): 
+                img_color = cv2.pyrUp(img_color) 
+            #cv2.imshow("upscaling",img_color) 
+            #cv2.waitKey(0) 
+
+            # -- STEPS 2 and 3 -- 
+            # convert to grayscale and apply median blur 
+            img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_RGB2GRAY) 
+            img_blur = cv2.medianBlur(img_gray, 3) 
+            #cv2.imshow("grayscale+median blur",img_color) 
+            #cv2.waitKey(0) 
+
+            # -- STEP 4 -- 
+            # detect and enhance edges 
+            img_edge = cv2.adaptiveThreshold(img_blur, 255, 
+                    cv2.ADAPTIVE_THRESH_MEAN_C, 
+                    cv2.THRESH_BINARY, 9, 2) 
+            #cv2.imshow("edge",img_edge) 
+            #cv2.waitKey(0) 
+
+            # -- STEP 5 -- 
+            # convert back to color so that it can be bit-ANDed with color image 
+            (x,y,z) = img_color.shape 
+            img_edge = cv2.resize(img_edge,(y,x)) 
+            img_edge = cv2.cvtColor(img_edge, cv2.COLOR_GRAY2RGB) 
+            cv2.imwrite("edge.png",img_edge) 
+            #cv2.imshow("step 5", img_edge) 
+            #cv2.waitKey(0) 
+            #img_edge = cv2.resize(img_edge,(i for i in img_color.shape[:2])) 
+            #print img_edge.shape, img_color.shape 
+            cartoonized_image = cv2.bitwise_and(img_color, img_edge)
+
+        return cartoonized_image
 
 
 upload_folder = os.path.join('static', 'uploads')
@@ -314,14 +315,273 @@ def closing():
         return render_template('closing.html', img=img_path, closing_img=closing_image_path)
     return render_template('closing.html')
 
+@app.route('/dilasi', methods=['GET', 'POST'])
+def dilasi():
+    if request.method == 'POST':
+        file = request.files['img']
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD'], filename))
+        img_path = os.path.join(app.config['UPLOAD'], filename)
+
+        img = cv2.imread(img_path)
+
+        kernel = np.ones((3, 3), np.uint8) 
+        
+        img_dilation = cv2.dilate(img, kernel, iterations=1)
+
+        img_erosion = cv2.erode(img, kernel, iterations=1) 
+
+
+        dilasi_image_path = os.path.join(app.config['UPLOAD'], 'dilasi_image.jpg')
+        erosion_image_path = os.path.join(app.config['UPLOAD'], 'erosi_image.jpg')
+
+        cv2.imwrite(dilasi_image_path, img_dilation)
+        cv2.imwrite(erosion_image_path, img_erosion)
+
+
+        return render_template('dilasi.html', img=img_path, dilasi_img=dilasi_image_path, erosi_img=erosion_image_path)
+    return render_template('dilasi.html')
+
+# @app.route('/erosi', methods=['GET', 'POST'])
+# def erosi():
+#     if request.method == 'POST':
+#         file = request.files['img']
+#         filename = secure_filename(file.filename)
+#         file.save(os.path.join(app.config['UPLOAD'], filename))
+#         img_path = os.path.join(app.config['UPLOAD'], filename)
+
+#         img = cv2.imread(img_path)
+
+#         kernel = np.ones((3, 3), np.uint8) 
+        
+#         img_erosion = cv2.erode(img, kernel, iterations=1) 
+
+#         erosion_image_path = os.path.join(app.config['UPLOAD'], 'erosi_image.jpg')
+#         cv2.imwrite(erosion_image_path, img_erosion)
+
+#         return render_template('erosi.html', img=img_path, erosi_img=erosion_image_path)
+#     return render_template('erosi.html')
+
+
+@app.route('/bilinear', methods=['GET', 'POST'])
+def bilinear():
+    if request.method == 'POST':
+        file = request.files['img']
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD'], filename))
+        img_path = os.path.join(app.config['UPLOAD'], filename)
+
+        img = cv2.imread(img_path)
+
+        # Mendefinisikan scale
+        scale_x = float(request.form['scale_x'])  
+        scale_y = float(request.form['scale_y'])  
+
+        # scaling menggunakan bilinear interpolation
+        scaled_img = cv2.resize(img, None, fx=scale_x, fy=scale_y, interpolation=cv2.INTER_LINEAR)
+        scaled_img_nearest = cv2.resize(img, None, fx=scale_x, fy=scale_y,interpolation=cv2.INTER_NEAREST)
+        scaled_img_lanczos = cv2.resize(img, None, fx=scale_x, fy=scale_y,interpolation=cv2.INTER_LANCZOS4)
 
 
 
+        # Menyimpan gambar
+        scaled_image_path = os.path.join(app.config['UPLOAD'], 'scaled_image.jpg')
+        scaled_imageN_path = os.path.join(app.config['UPLOAD'], 'scaled_imageN.jpg')
+        scaled_imageL_path = os.path.join(app.config['UPLOAD'], 'scaled_imageL.jpg')
+        cv2.imwrite(scaled_image_path, scaled_img)
+        cv2.imwrite(scaled_imageN_path, scaled_img_nearest)
+        cv2.imwrite(scaled_imageL_path, scaled_img_lanczos)
 
 
+        return render_template('bilinear.html', img=img_path, img_bilinear=scaled_image_path, img_nearest=scaled_imageN_path, img_lanczos=scaled_imageL_path)
+    return render_template('bilinear.html')
 
 
+@app.route('/lanczos', methods=['GET', 'POST'])
+def lanczos():
+    if request.method == 'POST':
+        file = request.files['img']
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD'], filename))
+        img_path = os.path.join(app.config['UPLOAD'], filename)
 
+        img = cv2.imread(img_path)
+
+        # Mendefinisikan scale
+        scale_x = int(float(request.form['scale_x'])) 
+        scale_y = int(float(request.form['scale_y'])) 
+
+        # scaling menggunakan lanczos interpolation
+        scaled_img = cv2.resize(img, None, fx=scale_x, fy=scale_y,interpolation=cv2.INTER_LANCZOS4)
+
+        # Menyimpan gambar
+        scaled_image_path = os.path.join(app.config['UPLOAD'], 'scaled_image.jpg')
+        cv2.imwrite(scaled_image_path, scaled_img)
+
+        return render_template('lanczos.html', img=img_path, img_lanczos=scaled_image_path)
+    return render_template('lanczos.html')
+
+import matplotlib.pyplot as plt
+from scipy import ndimage
+from skimage import data, color, io
+import skimage.util.noise as noise
+from numpy import array
+
+@app.route('/restoration', methods=['GET', 'POST'])
+def restoration():
+    if request.method == 'POST':
+        file = request.files['img']
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD'], filename))
+        img_path = os.path.join(app.config['UPLOAD'], filename)
+
+        image = cv2.imread(img_path)
+        image = color.rgb2gray(image)
+
+        gn=noise.random_noise(image,mode='s&p')
+        result = ndimage.uniform_filter(gn, 7)
+        # scaling menggunakan lanczos interpolation
+
+        restored_lowpass_path = os.path.join(app.config['UPLOAD'], 'lowpass.png')
+
+        #rank-older filtering
+        cross=array([[0,1,0],[1,1,1],[0,1,0]])
+        gn_rank=noise.random_noise(image,mode='s&p')
+        result_rank = ndimage.median_filter(gn_rank, footprint=cross)
+
+
+        fig, axes = plt.subplots(nrows=1, ncols=2)
+
+        ax = axes.ravel()
+        ax[0].imshow(gn, cmap='gray')
+        ax[0].set_title("Salt Pepper")
+        ax[1].imshow(result, cmap='gray')
+        ax[1].set_title("Low pass filter")
+        plt.tight_layout()
+        fig.savefig(restored_lowpass_path)
+
+
+        rank_image_path = os.path.join(app.config['UPLOAD'], 'rank.png')
+
+        fig, axes = plt.subplots(nrows=1, ncols=2)
+        ax = axes.ravel()
+        ax[0].imshow(gn_rank, cmap='gray')
+        ax[0].set_title("Salt Pepper")
+        ax[1].imshow(result_rank, cmap='gray')
+        ax[1].set_title("Rank order filter")
+        plt.tight_layout()
+        fig.savefig(rank_image_path)
+
+        av=array([[0,1,0],[1,1,1],[0,1,0]])/8.0
+        image_sp=noise.random_noise(image,mode='s&p')
+        image_sp_av=ndimage.convolve(image_sp,av)
+        D=0.48
+        r=(abs(image_sp-image_sp_av)>D)*1.0
+        outlier_image = r*image_sp_av+(1-r)*image_sp
+
+        outlier_image_path = os.path.join(app.config['UPLOAD'], 'outlier.png')
+        fig, axes = plt.subplots(nrows=1, ncols=2)
+        ax = axes.ravel()
+        ax[0].imshow(gn_rank, cmap='gray')
+        ax[0].set_title("Salt Pepper")
+        ax[1].imshow(outlier_image, cmap='gray')
+        ax[1].set_title("outlier filter")
+        plt.tight_layout()
+        fig.savefig(outlier_image_path)
+
+        perbandingan_image_path = os.path.join(app.config['UPLOAD'], 'perbandingan.png')
+        fig, axes = plt.subplots(nrows=1, ncols=3)
+        ax = axes.ravel()
+        ax[0].imshow(result, cmap='gray')
+        ax[0].set_title("low pass filter")
+        ax[0].axis('off')  # Turn off axis for the first subplot
+        ax[1].imshow(result_rank, cmap='gray')
+        ax[1].set_title("Rank order filter")
+        ax[1].axis('off')
+        ax[2].imshow(outlier_image, cmap='gray')
+        ax[2].set_title("outlier filter")
+        ax[2].axis('off')
+        plt.tight_layout()
+        fig.savefig(perbandingan_image_path)
+
+        # Menyimpan gambar
+        return render_template('image_restoration.html', img_lowpass = restored_lowpass_path, 
+                                                        img_rank = rank_image_path,
+                                                        img_outlier = outlier_image_path,
+                                                        perbandingan = perbandingan_image_path)
+    return render_template('image_restoration.html')
+
+@app.route('/add_noise', methods=['GET', 'POST'])
+def add_noise():
+    if request.method == 'POST':
+        file = request.files['img']
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD'], filename))
+        img_path = os.path.join(app.config['UPLOAD'], filename)
+
+        img = cv2.imread(img_path, 
+                 cv2.IMREAD_GRAYSCALE) 
+        # Mendefinisikan scale
+        
+
+        # scaling menggunakan lanczos interpolation
+
+        # Menyimpan gambar
+        noised_image_path = os.path.join(app.config['UPLOAD'], 'noised_image.jpg')
+        cv2.imwrite(noised_image_path, 
+            add_noise(img))
+        # fig, axes = plt.subplots(nrows=1, ncols=2)
+        # ax = axes.ravel()
+        # ax[0].imshow(img, cmap='gray')
+        # ax[0].set_title("Salt Pepper")
+        # ax[1].imshow(noised_image, cmap='gray')
+        # ax[1].set_title("outlier filter")
+        # plt.tight_layout()
+        # fig.savefig(noised_image_path)
+
+        return render_template('noised.html', img=img_path, img_noise=noised_image_path)
+    return render_template('noised.html')
+
+
+import random 
+def add_noise(img): 
+  
+    # Getting the dimensions of the image 
+    row , col = img.shape 
+      
+    # Randomly pick some pixels in the 
+    # image for coloring them white 
+    # Pick a random number between 300 and 10000 
+    number_of_pixels = random.randint(300, 10000) 
+    for i in range(number_of_pixels): 
+        
+        # Pick a random y coordinate 
+        y_coord=random.randint(0, row - 1) 
+          
+        # Pick a random x coordinate 
+        x_coord=random.randint(0, col - 1) 
+          
+        # Color that pixel to white 
+        img[y_coord][x_coord] = 255
+          
+    # Randomly pick some pixels in 
+    # the image for coloring them black 
+    # Pick a random number between 300 and 10000 
+    number_of_pixels = random.randint(300 , 10000) 
+    for i in range(number_of_pixels): 
+        
+        # Pick a random y coordinate 
+        y_coord=random.randint(0, row - 1) 
+          
+        # Pick a random x coordinate 
+        x_coord=random.randint(0, col - 1) 
+          
+        # Color that pixel to black 
+        img[y_coord][x_coord] = 0
+          
+    return img 
 
 if __name__ == '__main__': 
     app.run(debug=True,port=8001)
+
+
